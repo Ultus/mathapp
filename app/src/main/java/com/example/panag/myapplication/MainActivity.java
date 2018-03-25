@@ -41,6 +41,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public Stack<String> invertStack(Stack<String> stack) {
+        Stack<String> newStack=new Stack<>();
+        while (!stack.isEmpty()) {
+            newStack.push(stack.pop());
+        }
+        return newStack;
+    }
     public Stack<String> StringToStack(String expression) {
         int end=-1,i=expression.length()-1;
         Stack<String> stream=new Stack<>();
@@ -104,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             if (tempValue.equals("(")) {
                 currentCount++;
                 if (currentCount==bracketCount) {
-                    tempValue=String.valueOf(computeExpression(globalStack);
+                    tempValue=String.valueOf(computeExpression());
                     bracketCount--;
                 }
             }
@@ -116,12 +123,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public String computeExpression(Stack<String> stack) {
-        String result;
+    public String computeExpression() {
         computePowers();
         computeMultDiv();
         computeAddSub();
-        return result;
+        return globalStack.pop();
     }
 
     public void computeAddSub() {
@@ -174,111 +180,14 @@ public class MainActivity extends AppCompatActivity {
         }
         setGlobalStack(tempStack);
     }
-    boolean handleClosingBracket=false;
-    public String compute(Stack<String> stack) {
-        Stack<Double> temporaryStack=new Stack<>();
-        double currentValue,returnValue=0;
-        String operator;
-        boolean finishedLoop=false;
-        while (!stack.isEmpty() && !stack.peek().equals(")") && !finishedLoop) {
-            if (isOperand(stack.peek())) {
-                if (handleClosingBracket) {
-                    double bracketReturn=Double.parseDouble(stack.pop());
-                    String next=null;
-                    if (stack.size()>0) {
-                        next=stack.peek();
-                    }
-                    if (stack.size()==0 || next.equals("+") || next.equals("-")) { //Last value must be handled
-                        temporaryStack.push(bracketReturn);
-                    }
-                    else if (isOperand(next)) {
-                        stack.push(String.valueOf(bracketReturn*Double.parseDouble(stack.pop())));
-                    }
-                    else if (next.equals("*")) {
-                        stack.pop();
-                        stack.push(String.valueOf(bracketReturn*Double.parseDouble(stack.pop())));
-                    }
-                    else if (next.equals("/")) {
-                        stack.pop();
-                        stack.push(String.valueOf(bracketReturn/Double.parseDouble(stack.pop())));
-                    }
-                    else if (next.equals("(")) {
-                        stack.pop();
-                        stack.push(String.valueOf(bracketReturn*Double.parseDouble(compute(stack))));
-                    }
-                    else if (next.equals(")")) {
-                        stack.pop();
-                        temporaryStack.push(bracketReturn);
-                        finishedLoop=true;
-                    }
-                    handleClosingBracket=false;
-                }
-                else if (stack.size()==1) { //Last value must be handled
-                    temporaryStack.push(Double.parseDouble(stack.pop()));
-                }
-                else {
-                    currentValue=Double.parseDouble(stack.pop());
-                    operator=stack.pop();
-                    switch (operator) {
-                        case "+":temporaryStack.push(currentValue);
-                            break;
-                        case "-":temporaryStack.push(currentValue);
-                            String next=stack.pop();
-                            if (isOperand(next)) {
-                                stack.push(String.valueOf(-Double.parseDouble(next)));
-                            }
-                            else {
-                                stack.push(String.valueOf(-Double.parseDouble(compute(stack))));
-                            }
-                            break;
-                        case "*":if (stack.peek().equals("(")) {
-                                stack.pop();
-                                stack.push(String.valueOf(currentValue*Double.parseDouble(compute(stack))));
-                            }
-                            else {
-                            stack.push(String.valueOf(currentValue*Double.parseDouble(stack.pop())));
-                            }
-                            break;
-                        case "/":if (stack.peek().equals("(")) {
-                            stack.pop();
-                            stack.push(String.valueOf(currentValue/Double.parseDouble(compute(stack))));
-                            }
-                            else {
-                            stack.push(String.valueOf(currentValue/Double.parseDouble(stack.pop())));
-                            }
-                            break;
-                        case "(":stack.push(String.valueOf(currentValue*Double.parseDouble(compute(stack))));
-                            break;
-                        case ")":temporaryStack.push(currentValue);
-                            handleClosingBracket=true;
-                            finishedLoop=true;
-                            break;
-                    }
-                }
-            }
-            else {
-                operator=stack.pop();
-                switch (operator) {
-                    case "-":stack.push(String.valueOf(-Double.parseDouble(stack.pop())));
-                        break;
-                    case "+":
-                        break;
-                    case "(":stack.push(compute(stack));
-                        break;
-                }
-            }
-        }
-        while (!temporaryStack.isEmpty()) {
-            returnValue+=temporaryStack.pop();
-        }
-        return String.valueOf(returnValue);
-    }
 
     public void parse(TextView label) {
         String expression=label.getText().toString();
-        Stack<String> streamStack=StringToStack(expression);
+        expression="("+expression+")"; //program assumes loops of brackets
+        setGlobalStack(invertStack(StringToStack(expression)));
         if (isValid(expression)) {
-            label.setText(compute(computePowers(streamStack)));
+            computeBrackets();
+            label.setText(globalStack.pop());
         }
         else {
             label.setText("Error: bad syntax");
