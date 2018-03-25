@@ -41,6 +41,19 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public String editExpression(String expression) {
+        for (int i=1;i<expression.length()-1;i++) {
+            if (expression.charAt(i)=='(' && isOperand(expression.charAt(i-1))) {
+                expression=expression.subSequence(0,i)+"*"+expression.subSequence(i,expression.length());
+            }
+            else if (expression.charAt(i)==')' && isOperand(expression.charAt(i+1))) {
+                expression=expression.subSequence(0,i+1)+"*"+expression.subSequence(i+1,expression.length());
+            }
+        }
+        expression="("+expression+")"; //program assumes loops of brackets
+        return expression;
+    }
+
     public Stack<String> invertStack(Stack<String> stack) {
         Stack<String> newStack=new Stack<>();
         while (!stack.isEmpty()) {
@@ -183,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void parse(TextView label) {
         String expression=label.getText().toString();
-        expression="("+expression+")"; //program assumes loops of brackets
+        expression=editExpression(expression);
         setGlobalStack(invertStack(StringToStack(expression)));
         if (isValid(expression)) {
             computeBrackets();
