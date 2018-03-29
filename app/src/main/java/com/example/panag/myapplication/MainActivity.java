@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.TextView;
 import java.util.Stack;
 
+import static java.lang.Math.sqrt;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -14,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    //Global Variables
     Stack<String> globalStack=new Stack<>();
     int bracketCount=0;
 
@@ -54,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
         return expression;
     }
 
+    public String factorial(String x) {
+        if (Double.parseDouble(x)<=1)
+            return "1";
+        else
+            return String.valueOf(Double.parseDouble(x)*Double.parseDouble(factorial(String.valueOf(Double.parseDouble(x)-1))));
+    }
     public Stack<String> invertStack(Stack<String> stack) {
         Stack<String> newStack=new Stack<>();
         while (!stack.isEmpty()) {
@@ -111,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if (count!=0)
             isExpression=false;
-        isExpression=isExpression&&expression.matches("^(([(]*([+\\-]\\d+(.\\d+)?[)]*)|([(]*\\d+(.\\d+)?[)]*))([+^\\-/*)(][(]*\\d+(.\\d+)?[)]*)*)$");
+        isExpression=isExpression&&expression.matches("^(([(]*([+\\-]?\\d+((.\\d+)|!)?([)][!]?)*))([+^\\-/*)(][(]*\\d+((.\\d+)|!)?([)][!]?)*)*)$");
         return isExpression;
     }
 
@@ -137,10 +144,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String computeExpression() {
+        computeFactorial();
         computePowers();
         computeMultDiv();
         computeAddSub();
         return globalStack.pop();
+    }
+
+    public void computeFactorial() {
+        String tempValue;
+        Stack<String> tempStack=new Stack<>();
+        while (!globalStack.peek().equals(")")) {
+            tempValue=globalStack.pop();
+            if (tempValue.equals("!")) {
+                tempStack.push(factorial(tempStack.pop()));
+            }
+            else {
+                tempStack.push(tempValue);
+            }
+        }
+        setGlobalStack(tempStack);
     }
 
     public void computeAddSub() {
@@ -286,8 +309,16 @@ public class MainActivity extends AppCompatActivity {
         TextView label=findViewById(R.id.label);
         label.append("^");
     }
+    public void onButtonTapCLR(View v) {
+        TextView label=findViewById(R.id.label);
+        label.setText("");
+    }
     public void onButtonTapEqual(View v) {
         TextView label=findViewById(R.id.label);
         parse(label);
+    }
+    public void onButtonTapFactorial(View v) {
+        TextView label=findViewById(R.id.label);
+        label.append("!");
     }
 }

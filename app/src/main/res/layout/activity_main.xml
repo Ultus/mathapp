@@ -159,6 +159,36 @@
         app:layout_constraintVertical_bias="0.68" />
 
     <Button
+        android:id="@+id/buttonfact"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:background="@color/greenish"
+        android:onClick="onButtonTapFactorial"
+        android:text="!"
+        android:textColor="@android:color/holo_green_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.595"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label"
+        app:layout_constraintVertical_bias="0.258" />
+
+    <Button
+        android:id="@+id/buttonclr"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:background="@color/greenish"
+        android:onClick="onButtonTapCLR"
+        android:text="CLR"
+        android:textColor="@android:color/holo_green_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.595"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label"
+        app:layout_constraintVertical_bias="0.118" />
+
+    <Button
         android:id="@+id/buttondel"
         android:layout_width="50dp"
         android:layout_height="40dp"
