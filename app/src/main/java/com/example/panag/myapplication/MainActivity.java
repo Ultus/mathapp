@@ -18,7 +18,8 @@ public class MainActivity extends AppCompatActivity {
 
     Stack<String> globalStack=new Stack<>();
     int bracketCount=0;
-
+    String[] errorList={"Error: Bad Syntax", "Error: Bad Factorial"};
+    int errorCode=-1;
     public void setGlobalStack(Stack<String> stack) { //Note argument should be in reverse
         while (!stack.isEmpty()) {
             globalStack.push(stack.pop());
@@ -56,10 +57,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String factorial(String x) {
-        if (Double.parseDouble(x)<=1)
+        double val=Double.parseDouble(x);
+        if (val<0) {
+            errorCode=1;
+        }
+        if (val<=1)
             return "1";
         else
-            return String.valueOf(Double.parseDouble(x)*Double.parseDouble(factorial(String.valueOf(Double.parseDouble(x)-1))));
+            return String.valueOf(val*Double.parseDouble(factorial(String.valueOf(val-1))));
     }
     public Stack<String> invertStack(Stack<String> stack) {
         Stack<String> newStack=new Stack<>();
@@ -103,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean isValid(String expression) {
         boolean isExpression=true;
         int count=0;
-        for (int i=0;i<expression.length();i++) {
+        for (int i=0;i<expression.length();i++) { //check bracket count
             if (expression.charAt(i)=='(')
                 {
                     count++;
@@ -220,13 +225,21 @@ public class MainActivity extends AppCompatActivity {
     public void parse(TextView label) {
         String expression=label.getText().toString();
         expression=editExpression(expression);
-        setGlobalStack(invertStack(StringToStack(expression)));
         if (isValid(expression)) {
+            setGlobalStack(invertStack(StringToStack(expression)));
             computeBrackets();
-            label.setText(globalStack.pop());
+            if (errorCode<0) {
+                label.setText(globalStack.pop());
+            }
+            else {
+                label.setText(errorList[errorCode]);
+                errorCode=-1;
+            }
         }
         else {
-            label.setText("Error: bad syntax");
+            errorCode=0;
+            label.setText(errorList[errorCode]);
+            bracketCount=0; //editExpression gives bracket not computed in nonvalid expression
         }
     }
 
