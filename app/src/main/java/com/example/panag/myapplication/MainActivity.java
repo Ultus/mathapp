@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 import java.util.Stack;
 
-import static java.lang.Math.sqrt;
+import static java.lang.Math.PI;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     Stack<String> globalStack=new Stack<>();
     int bracketCount=0;
-    String[] errorList={"Error: Bad Syntax", "Error: Bad Factorial"};
+    String[] errorList={"Error: Bad Syntax", "Error: Bad Factorial","Error: Division by 0"};
     int errorCode=-1;
     public void setGlobalStack(Stack<String> stack) { //Note argument should be in reverse
         while (!stack.isEmpty()) {
@@ -42,8 +42,31 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
-
+    //expression=expression.subSequence(0,i)+String.valueOf(Math.PI)+expression.subSequence(i+1,expression.length());
     public String editExpression(String expression) {
+        for (int i=0;i<expression.length();i++) {
+            if (expression.charAt(i)=='π' || expression.charAt(i)=='e') {
+                String tempExpression=String.valueOf(expression.subSequence(0,i));
+                if (i>0) {
+                    if (isOperand(expression.charAt(i-1))) {
+                        tempExpression+="*";
+                    }
+                }
+                if (expression.charAt(i)=='e') {
+                    tempExpression+=String.valueOf(Math.E);
+                }
+                else {
+                    tempExpression+=String.valueOf(Math.PI);
+                }
+                if (i<expression.length()-1) {
+                    if (isOperand(expression.charAt(i+1))) {
+                        tempExpression+="*";
+                    }
+                    tempExpression+=String.valueOf(expression.subSequence(i+1,expression.length()));
+                }
+                expression=tempExpression;
+            }
+        }
         for (int i=1;i<expression.length()-1;i++) {
             if (expression.charAt(i)=='(' && isOperand(expression.charAt(i-1))) {
                 expression=expression.subSequence(0,i)+"*"+expression.subSequence(i,expression.length());
@@ -199,7 +222,11 @@ public class MainActivity extends AppCompatActivity {
                 tempStack.push(String.valueOf(Double.parseDouble(tempStack.pop())*Double.parseDouble(globalStack.pop())));
             }
             else if (tempValue.equals("/")) {
-                tempStack.push(String.valueOf(Double.parseDouble(tempStack.pop())/Double.parseDouble(globalStack.pop())));
+                double divCheck=Double.parseDouble(globalStack.pop());
+                if (divCheck==0) {
+                    errorCode=2;
+                }
+                tempStack.push(String.valueOf(Double.parseDouble(tempStack.pop())/divCheck));
             }
             else {
                 tempStack.push(tempValue);
@@ -239,7 +266,8 @@ public class MainActivity extends AppCompatActivity {
         else {
             errorCode=0;
             label.setText(errorList[errorCode]);
-            bracketCount=0; //editExpression gives bracket not computed in nonvalid expression
+            errorCode=-1;
+            bracketCount=0; //editExpression gives bracket not computed in invalid expression
         }
     }
 
@@ -325,6 +353,14 @@ public class MainActivity extends AppCompatActivity {
     public void onButtonTapCLR(View v) {
         TextView label=findViewById(R.id.label);
         label.setText("");
+    }
+    public void onButtonTapPI(View v) {
+        TextView label=findViewById(R.id.label);
+        label.append("π");
+    }
+    public void onButtonTapE(View v) {
+        TextView label=findViewById(R.id.label);
+        label.append("e");
     }
     public void onButtonTapEqual(View v) {
         TextView label=findViewById(R.id.label);
