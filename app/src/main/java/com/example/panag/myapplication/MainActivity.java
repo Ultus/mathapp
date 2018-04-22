@@ -4,9 +4,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import java.util.Stack;
 
-import static java.lang.Math.PI;
+import java.math.BigDecimal;
+import java.util.Stack;
+import java.lang.Math;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +27,11 @@ public class MainActivity extends AppCompatActivity {
             globalStack.push(stack.pop());
         }
     }
+    public static double round(double value, int places) {
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places,BigDecimal.ROUND_HALF_UP);
+        return bd.doubleValue();
+    }
     public boolean isOperand(String x) {
         try {
             Double.parseDouble(x);
@@ -42,9 +49,10 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     }
-    //expression=expression.subSequence(0,i)+String.valueOf(Math.PI)+expression.subSequence(i+1,expression.length());
+
     public String editExpression(String expression) {
         for (int i=0;i<expression.length();i++) {
+            boolean increment=false;
             if (expression.charAt(i)=='π' || expression.charAt(i)=='e') {
                 String tempExpression=String.valueOf(expression.subSequence(0,i));
                 if (i>0) {
@@ -65,6 +73,37 @@ public class MainActivity extends AppCompatActivity {
                     tempExpression+=String.valueOf(expression.subSequence(i+1,expression.length()));
                 }
                 expression=tempExpression;
+            }
+            else if (expression.charAt(i)=='s' || expression.charAt(i)=='c' || expression.charAt(i)=='t') {
+                String tempExpression=String.valueOf(expression.subSequence(0,i));
+                if (i>0) {
+                    if (isOperand(expression.charAt(i-1))) {
+                        tempExpression+="*";
+                        increment=true;
+                    }
+                }
+                tempExpression+=expression.charAt(i);
+                int count=1,closing=3; //3 because e.g in(
+                while (count>0 && i+closing<expression.length()-1) {
+                    closing++;
+                    if (expression.charAt(closing)==')') {
+                        count--;
+                    }
+                    else if (expression.charAt(closing)=='(') {
+                        count++;
+                    }
+                }
+                tempExpression+=String.valueOf(expression.subSequence(i+3,i+closing+1));
+                if (i+closing<expression.length()-1) {
+                    if (isOperand(expression.charAt(i+closing+1))) {
+                        tempExpression+="*";
+                    }
+                    tempExpression+=String.valueOf(expression.subSequence(i+closing+1,expression.length()));
+                }
+                expression=tempExpression;
+                if (increment) {
+                    i++;
+                }
             }
         }
         for (int i=1;i<expression.length()-1;i++) {
@@ -146,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if (count!=0)
             isExpression=false;
-        isExpression=isExpression&&expression.matches("^(([(]*([+\\-]?\\d+((.\\d+)|!)?([)][!]?)*))([+^\\-/*)(][(]*\\d+((.\\d+)|!)?([)][!]?)*)*)$");
+        isExpression=isExpression&&expression.matches("^(([(]*([+\\-]?([cts][(]+)*\\d+((.\\d+)|!)?([)][!]?)*))(([+^\\-/*)(]|((([+^\\-/*)(])?)([cts][(]+)+))[(]*\\d+((.\\d+)|!)?([)][!]?)*)*)$");
         return isExpression;
     }
 
@@ -172,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public String computeExpression() {
+        computeTrig();
         computeFactorial();
         computePowers();
         computeMultDiv();
@@ -179,6 +219,26 @@ public class MainActivity extends AppCompatActivity {
         return globalStack.pop();
     }
 
+    public void computeTrig() {
+        String tempValue;
+        Stack<String> tempStack=new Stack<>();
+        while (!globalStack.peek().equals(")")) {
+            tempValue=globalStack.pop();
+            if (tempValue.equals("s")) {
+                tempStack.push(String.valueOf(round(Math.sin(Double.parseDouble(globalStack.pop())),10)));
+            }
+            else if (tempValue.equals("c")) {
+                tempStack.push(String.valueOf(round(Math.cos(Double.parseDouble(globalStack.pop())),10)));
+            }
+            else if (tempValue.equals("t")) {
+                tempStack.push(String.valueOf(round(Math.tan(Double.parseDouble(globalStack.pop())),10)));
+            }
+            else {
+                tempStack.push(tempValue);
+            }
+        }
+        setGlobalStack(tempStack);
+    }
     public void computeFactorial() {
         String tempValue;
         Stack<String> tempStack=new Stack<>();
@@ -208,6 +268,7 @@ public class MainActivity extends AppCompatActivity {
             else {
                 result+=Double.parseDouble(tempValue); //Operand without preceding sign
             }
+            result=round(result,10);
         }
         globalStack.pop(); //No more need for ")"
         globalStack.push(String.valueOf(result));
@@ -225,8 +286,12 @@ public class MainActivity extends AppCompatActivity {
                 double divCheck=Double.parseDouble(globalStack.pop());
                 if (divCheck==0) {
                     errorCode=2;
+                    tempStack.push("!");
+                    tempStack.pop();
                 }
-                tempStack.push(String.valueOf(Double.parseDouble(tempStack.pop())/divCheck));
+                else {
+                    tempStack.push(String.valueOf(Double.parseDouble(tempStack.pop())/divCheck));
+                }
             }
             else {
                 tempStack.push(tempValue);
@@ -361,6 +426,18 @@ public class MainActivity extends AppCompatActivity {
     public void onButtonTapE(View v) {
         TextView label=findViewById(R.id.label);
         label.append("e");
+    }
+    public void onButtonTapSin(View v) {
+        TextView label=findViewById(R.id.label);
+        label.append("sin(");
+    }
+    public void onButtonTapCos(View v) {
+        TextView label=findViewById(R.id.label);
+        label.append("cos(");
+    }
+    public void onButtonTapTan(View v) {
+        TextView label=findViewById(R.id.label);
+        label.append("tan(");
     }
     public void onButtonTapEqual(View v) {
         TextView label=findViewById(R.id.label);
