@@ -52,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
 
     public String editExpression(String expression) {
         for (int i=0;i<expression.length();i++) {
-            boolean increment=false;
+            String tempExpression=expression;
             if (expression.charAt(i)=='π' || expression.charAt(i)=='e') {
-                String tempExpression=String.valueOf(expression.subSequence(0,i));
+                tempExpression=String.valueOf(expression.subSequence(0,i));
                 if (i>0) {
                     if (isOperand(expression.charAt(i-1))) {
                         tempExpression+="*";
@@ -72,47 +72,41 @@ public class MainActivity extends AppCompatActivity {
                     }
                     tempExpression+=String.valueOf(expression.subSequence(i+1,expression.length()));
                 }
-                expression=tempExpression;
             }
-            else if (expression.charAt(i)=='s' || expression.charAt(i)=='c' || expression.charAt(i)=='t') {
-                String tempExpression=String.valueOf(expression.subSequence(0,i));
-                if (i>0) {
-                    if (isOperand(expression.charAt(i-1))) {
-                        tempExpression+="*";
-                        increment=true;
+            tempExpression = tempExpression.replace("sin(", "s(");
+            tempExpression = tempExpression.replace("cos(", "c(");
+            tempExpression = tempExpression.replace("tan(", "t(");
+            tempExpression = tempExpression.replace("sinh(", "h(");
+            tempExpression = tempExpression.replace("cosh(", "i(");
+            tempExpression = tempExpression.replace("tanh(", "j(");
+            int counter = 1, brackCounter = 2;
+            while (counter < tempExpression.length() - 1) {
+                if (tempExpression.charAt(counter) == 's' || tempExpression.charAt(counter) == 'c' || tempExpression.charAt(counter) == 't') {
+                    if (isOperand(tempExpression.charAt(counter - 1))) {
+                        tempExpression = tempExpression.substring(0, counter) + "*" + tempExpression.substring(counter, tempExpression.length());
+                    }
+                    brackCounter = 1;
+                    counter++;
+                } else if (tempExpression.charAt(counter) == ')') {
+                    brackCounter--;
+                    if (isOperand(tempExpression.charAt(counter + 1))) {
+                        tempExpression = tempExpression.substring(0, counter + 1) + "*" + tempExpression.substring(counter + 1, tempExpression.length());
+                    }
+                } else if (tempExpression.charAt(counter) == '(') {
+                    brackCounter++;
+                    if (isOperand(tempExpression.charAt(counter - 1))) {
+                        tempExpression = tempExpression.substring(0, counter) + "*" + tempExpression.substring(counter, tempExpression.length());
                     }
                 }
-                tempExpression+=expression.charAt(i);
-                int count=1,closing=3; //3 because e.g in(
-                while (count>0 && i+closing<expression.length()-1) {
-                    closing++;
-                    if (expression.charAt(closing)==')') {
-                        count--;
+                if (brackCounter == 0) {
+                    if (isOperand(tempExpression.charAt(counter + 1))) {
+                        tempExpression = tempExpression.substring(0, counter + 1) + "*" + tempExpression.substring(counter + 1, tempExpression.length());
                     }
-                    else if (expression.charAt(closing)=='(') {
-                        count++;
-                    }
+                    brackCounter = 2;
                 }
-                tempExpression+=String.valueOf(expression.subSequence(i+3,i+closing+1));
-                if (i+closing<expression.length()-1) {
-                    if (isOperand(expression.charAt(i+closing+1))) {
-                        tempExpression+="*";
-                    }
-                    tempExpression+=String.valueOf(expression.subSequence(i+closing+1,expression.length()));
-                }
-                expression=tempExpression;
-                if (increment) {
-                    i++;
-                }
+                counter++;
             }
-        }
-        for (int i=1;i<expression.length()-1;i++) {
-            if (expression.charAt(i)=='(' && isOperand(expression.charAt(i-1))) {
-                expression=expression.subSequence(0,i)+"*"+expression.subSequence(i,expression.length());
-            }
-            else if (expression.charAt(i)==')' && isOperand(expression.charAt(i+1))) {
-                expression=expression.subSequence(0,i+1)+"*"+expression.subSequence(i+1,expression.length());
-            }
+            expression=tempExpression;
         }
         expression="("+expression+")"; //program assumes loops of brackets
         return expression;
@@ -185,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if (count!=0)
             isExpression=false;
-        isExpression=isExpression&&expression.matches("^(([(]*([+\\-]?([cts][(]+)*\\d+((.\\d+)|!)?([)][!]?)*))(([+^\\-/*)(]|((([+^\\-/*)(])?)([cts][(]+)+))[(]*\\d+((.\\d+)|!)?([)][!]?)*)*)$");
+        isExpression=isExpression&&expression.matches("^(([(]*([+\\-]?([ctshij][(]+)*\\d+((.\\d+)|!)?([)][!]?)*))(([+^\\-/*)(]|((([+^\\-/*)(])?)([ctshij][(]+)+))[(]*\\d+((.\\d+)|!)?([)][!]?)*)*)$");
         return isExpression;
     }
 
@@ -232,6 +226,15 @@ public class MainActivity extends AppCompatActivity {
             }
             else if (tempValue.equals("t")) {
                 tempStack.push(String.valueOf(round(Math.tan(Double.parseDouble(globalStack.pop())),10)));
+            }
+            else if (tempValue.equals("h")) {
+                tempStack.push(String.valueOf(round(Math.sinh(Double.parseDouble(globalStack.pop())),10)));
+            }
+            else if (tempValue.equals("i")) {
+                tempStack.push(String.valueOf(round(Math.cosh(Double.parseDouble(globalStack.pop())),10)));
+            }
+            else if (tempValue.equals("j")) {
+                tempStack.push(String.valueOf(round(Math.tanh(Double.parseDouble(globalStack.pop())),10)));
             }
             else {
                 tempStack.push(tempValue);
@@ -438,6 +441,18 @@ public class MainActivity extends AppCompatActivity {
     public void onButtonTapTan(View v) {
         TextView label=findViewById(R.id.label);
         label.append("tan(");
+    }
+    public void onButtonTapSinh(View v) {
+        TextView label=findViewById(R.id.label);
+        label.append("sinh(");
+    }
+    public void onButtonTapCosh(View v) {
+        TextView label=findViewById(R.id.label);
+        label.append("cosh(");
+    }
+    public void onButtonTapTanh(View v) {
+        TextView label=findViewById(R.id.label);
+        label.append("tanh(");
     }
     public void onButtonTapEqual(View v) {
         TextView label=findViewById(R.id.label);
