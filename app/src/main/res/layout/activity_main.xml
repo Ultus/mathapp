@@ -288,6 +288,22 @@
         app:layout_constraintVertical_bias="0.956" />
 
     <Button
+        android:id="@+id/buttonshift"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:background="@color/greenish"
+        android:onClick="onButtonTapShift"
+        android:text="SHIFT"
+        android:textAllCaps="false"
+        android:textColor="@android:color/holo_green_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.784"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label"
+        app:layout_constraintVertical_bias="0.543" />
+
+    <Button
         android:id="@+id/buttonfact"
         android:layout_width="50dp"
         android:layout_height="40dp"

@@ -4,10 +4,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 import java.math.BigDecimal;
 import java.util.Stack;
 import java.lang.Math;
+
+import static java.lang.Math.PI;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -20,8 +21,9 @@ public class MainActivity extends AppCompatActivity {
 
     Stack<String> globalStack=new Stack<>();
     int bracketCount=0;
-    String[] errorList={"Error: Bad Syntax", "Error: Bad Factorial","Error: Division by 0"};
+    String[] errorList={"Error: Bad Syntax", "Error: Bad Factorial","Error: Division by 0","Error: Bad Argument"};
     int errorCode=-1;
+    boolean shiftState=false;
     public void setGlobalStack(Stack<String> stack) { //Note argument should be in reverse
         while (!stack.isEmpty()) {
             globalStack.push(stack.pop());
@@ -32,6 +34,22 @@ public class MainActivity extends AppCompatActivity {
         bd = bd.setScale(places,BigDecimal.ROUND_HALF_UP);
         return bd.doubleValue();
     }
+
+    public double asinh(double x)
+    {
+        return Math.log(x + Math.sqrt(x*x + 1.0));
+    }
+
+    public double acosh(double x)
+    {
+        return Math.log(x + Math.sqrt(x*x - 1.0));
+    }
+
+    public double atanh(double x)
+    {
+        return 0.5*Math.log( (x + 1.0) / (1.0 - x ) );
+    }
+
     public boolean isOperand(String x) {
         try {
             Double.parseDouble(x);
@@ -50,6 +68,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public boolean isMultiplicativeBack(char x) { //e.g s(5)x must recognize ) as multiplication
+        if (isOperand(x) || x==')') {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public boolean isMultiplicativeFront(char x) { //e.g x(5) must recognize ( as multiplication
+        if (isOperand(x) || x=='(') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
     public String editExpression(String expression) {
         for (int i=0;i<expression.length();i++) {
             String tempExpression=expression;
@@ -64,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
                     tempExpression+=String.valueOf(Math.E);
                 }
                 else {
-                    tempExpression+=String.valueOf(Math.PI);
+                    tempExpression+=String.valueOf(PI);
                 }
                 if (i<expression.length()-1) {
                     if (isOperand(expression.charAt(i+1))) {
@@ -79,30 +115,27 @@ public class MainActivity extends AppCompatActivity {
             tempExpression = tempExpression.replace("sinh(", "h(");
             tempExpression = tempExpression.replace("cosh(", "i(");
             tempExpression = tempExpression.replace("tanh(", "j(");
-            int counter = 1, brackCounter = 2;
+            tempExpression = tempExpression.replace("arcs(", "S(");
+            tempExpression = tempExpression.replace("arcc(", "C(");
+            tempExpression = tempExpression.replace("arct(", "T(");
+            tempExpression = tempExpression.replace("arch(", "H(");
+            tempExpression = tempExpression.replace("arci(", "I(");
+            tempExpression = tempExpression.replace("arcj(", "J(");
+            int counter = 1;
             while (counter < tempExpression.length() - 1) {
-                if (tempExpression.charAt(counter) == 's' || tempExpression.charAt(counter) == 'c' || tempExpression.charAt(counter) == 't') {
-                    if (isOperand(tempExpression.charAt(counter - 1))) {
+                if (tempExpression.charAt(counter) == 's' || tempExpression.charAt(counter) == 'c' || tempExpression.charAt(counter) == 't' || tempExpression.charAt(counter) == 'h' || tempExpression.charAt(counter) == 'i' || tempExpression.charAt(counter) == 'j' || tempExpression.charAt(counter) == 'S' || tempExpression.charAt(counter) == 'C' || tempExpression.charAt(counter) == 'T' || tempExpression.charAt(counter) == 'H' || tempExpression.charAt(counter) == 'I' || tempExpression.charAt(counter) == 'J') {
+                    if (isMultiplicativeBack(tempExpression.charAt(counter - 1))) {
                         tempExpression = tempExpression.substring(0, counter) + "*" + tempExpression.substring(counter, tempExpression.length());
                     }
-                    brackCounter = 1;
                     counter++;
                 } else if (tempExpression.charAt(counter) == ')') {
-                    brackCounter--;
-                    if (isOperand(tempExpression.charAt(counter + 1))) {
+                    if (isMultiplicativeFront(tempExpression.charAt(counter + 1))) {
                         tempExpression = tempExpression.substring(0, counter + 1) + "*" + tempExpression.substring(counter + 1, tempExpression.length());
                     }
                 } else if (tempExpression.charAt(counter) == '(') {
-                    brackCounter++;
-                    if (isOperand(tempExpression.charAt(counter - 1))) {
+                    if (isMultiplicativeBack(tempExpression.charAt(counter - 1))) {
                         tempExpression = tempExpression.substring(0, counter) + "*" + tempExpression.substring(counter, tempExpression.length());
                     }
-                }
-                if (brackCounter == 0) {
-                    if (isOperand(tempExpression.charAt(counter + 1))) {
-                        tempExpression = tempExpression.substring(0, counter + 1) + "*" + tempExpression.substring(counter + 1, tempExpression.length());
-                    }
-                    brackCounter = 2;
                 }
                 counter++;
             }
@@ -179,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if (count!=0)
             isExpression=false;
-        isExpression=isExpression&&expression.matches("^(([(]*([+\\-]?([ctshij][(]+)*\\d+((.\\d+)|!)?([)][!]?)*))(([+^\\-/*)(]|((([+^\\-/*)(])?)([ctshij][(]+)+))[(]*\\d+((.\\d+)|!)?([)][!]?)*)*)$");
+        isExpression=isExpression&&expression.matches("^(([(]*([+\\-]?[(]*([ctshijCTSHIJ][(]+[-]?)*\\d+((.\\d+)|!)?([)][!]?)*))(([+^\\-/*)(]|((([+^\\-/*)(])?)([ctshijCTSHIJ][(]+[-]?)+))[(]*\\d+((.\\d+)|!)?([)][!]?)*)*)$");
         return isExpression;
     }
 
@@ -225,16 +258,69 @@ public class MainActivity extends AppCompatActivity {
                 tempStack.push(String.valueOf(round(Math.cos(Double.parseDouble(globalStack.pop())),10)));
             }
             else if (tempValue.equals("t")) {
-                tempStack.push(String.valueOf(round(Math.tan(Double.parseDouble(globalStack.pop())),10)));
+                double x=Double.parseDouble(globalStack.pop());
+                if (x!=0 && ((x-round(PI/2,10))/round(PI,10)==Math.floor((x-round(PI/2,10))/round(PI,10)) || (x+round(PI/2,10))/round(PI,10)==Math.floor((x+round(PI/2,10))/round(PI,10)))) {
+                    tempStack.push("1");
+                    errorCode=3;
+                }
+                else {
+                    tempStack.push(String.valueOf(round(Math.tan(x),10)));
+                }
             }
             else if (tempValue.equals("h")) {
-                tempStack.push(String.valueOf(round(Math.sinh(Double.parseDouble(globalStack.pop())),10)));
+                tempStack.push(String.valueOf(round(Math.sinh(Double.parseDouble(globalStack.pop())), 10)));
             }
             else if (tempValue.equals("i")) {
                 tempStack.push(String.valueOf(round(Math.cosh(Double.parseDouble(globalStack.pop())),10)));
             }
             else if (tempValue.equals("j")) {
                 tempStack.push(String.valueOf(round(Math.tanh(Double.parseDouble(globalStack.pop())),10)));
+            }
+            else if (tempValue.equals("S")) {
+                double x=Double.parseDouble(globalStack.pop());
+                if (x>1 || x<-1) {
+                    tempStack.push("1");
+                    errorCode=3;
+                }
+                else {
+                    tempStack.push(String.valueOf(round(Math.asin(x),10)));
+                }
+            }
+            else if (tempValue.equals("C")) {
+                double x=Double.parseDouble(globalStack.pop());
+                if (x>1 || x<-1) {
+                    tempStack.push("1");
+                    errorCode=3;
+                }
+                else {
+                    tempStack.push(String.valueOf(round(Math.acos(x),10)));
+                }
+            }
+            else if (tempValue.equals("T")) {
+                tempStack.push(String.valueOf(round(Math.atan(Double.parseDouble(globalStack.pop())),10)));
+            }
+            else if (tempValue.equals("H")) {
+                tempStack.push(String.valueOf(round(asinh(Double.parseDouble(globalStack.pop())),10)));
+            }
+            else if (tempValue.equals("I")) {
+                double x=Double.parseDouble(globalStack.pop());
+                if (x<1) {
+                    tempStack.push("1");
+                    errorCode=3;
+                }
+                else {
+                    tempStack.push(String.valueOf(round(acosh(x),10)));
+                }
+            }
+            else if (tempValue.equals("J")) {
+                double x=Double.parseDouble(globalStack.pop());
+                if (x<-1 || x>1) {
+                    tempStack.push("1");
+                    errorCode=3;
+                }
+                else {
+                    tempStack.push(String.valueOf(round(atanh(x),10)));
+                }
             }
             else {
                 tempStack.push(tempValue);
@@ -432,27 +518,48 @@ public class MainActivity extends AppCompatActivity {
     }
     public void onButtonTapSin(View v) {
         TextView label=findViewById(R.id.label);
+        if (shiftState) {
+            label.append("arc");
+        }
         label.append("sin(");
     }
     public void onButtonTapCos(View v) {
         TextView label=findViewById(R.id.label);
+        if (shiftState) {
+            label.append("arc");
+        }
         label.append("cos(");
     }
     public void onButtonTapTan(View v) {
         TextView label=findViewById(R.id.label);
+        if (shiftState) {
+            label.append("arc");
+        }
         label.append("tan(");
     }
     public void onButtonTapSinh(View v) {
         TextView label=findViewById(R.id.label);
+        if (shiftState) {
+            label.append("arc");
+        }
         label.append("sinh(");
     }
     public void onButtonTapCosh(View v) {
         TextView label=findViewById(R.id.label);
+        if (shiftState) {
+            label.append("arc");
+        }
         label.append("cosh(");
     }
     public void onButtonTapTanh(View v) {
         TextView label=findViewById(R.id.label);
+        if (shiftState) {
+            label.append("arc");
+        }
         label.append("tanh(");
+    }
+    public void onButtonTapShift(View v) {
+        shiftState=!shiftState;
     }
     public void onButtonTapEqual(View v) {
         TextView label=findViewById(R.id.label);
