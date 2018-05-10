@@ -1,14 +1,25 @@
 package com.example.panag.myapplication;
 
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import java.math.BigDecimal;
 import java.util.Stack;
 import java.lang.Math;
 
 import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.cos;
+import static java.lang.Math.cosh;
+import static java.lang.Math.log;
+import static java.lang.Math.log10;
+import static java.lang.Math.sin;
+import static java.lang.Math.sinh;
+import static java.lang.Math.tan;
+import static java.lang.Math.tanh;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -21,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     Stack<String> globalStack=new Stack<>();
     int bracketCount=0;
-    String[] errorList={"Error: Bad Syntax", "Error: Bad Factorial","Error: Division by 0","Error: Bad Argument"};
+    String[] errorList={"Error: Bad Syntax", "Error: Bad Factorial","Error: Division by Zero","Error: Bad Angle","Error: Bad Logarithm"};
     int errorCode=-1;
     boolean shiftState=false;
     public void setGlobalStack(Stack<String> stack) { //Note argument should be in reverse
@@ -121,6 +132,15 @@ public class MainActivity extends AppCompatActivity {
             tempExpression = tempExpression.replace("arch(", "H(");
             tempExpression = tempExpression.replace("arci(", "I(");
             tempExpression = tempExpression.replace("arcj(", "J(");
+            tempExpression = tempExpression.replace("abs(", "A(");
+            tempExpression = tempExpression.replace("log(", "L(");
+            tempExpression = tempExpression.replace("ln(", "N(");
+            tempExpression = tempExpression.replace("sec(", "α(");
+            tempExpression = tempExpression.replace("csc(", "β(");
+            tempExpression = tempExpression.replace("cot(", "γ(");
+            tempExpression = tempExpression.replace("sech(", "δ(");
+            tempExpression = tempExpression.replace("csch(", "ε(");
+            tempExpression = tempExpression.replace("coth(", "ζ(");
             int counter = 1;
             while (counter < tempExpression.length() - 1) {
                 if (tempExpression.charAt(counter) == 's' || tempExpression.charAt(counter) == 'c' || tempExpression.charAt(counter) == 't' || tempExpression.charAt(counter) == 'h' || tempExpression.charAt(counter) == 'i' || tempExpression.charAt(counter) == 'j' || tempExpression.charAt(counter) == 'S' || tempExpression.charAt(counter) == 'C' || tempExpression.charAt(counter) == 'T' || tempExpression.charAt(counter) == 'H' || tempExpression.charAt(counter) == 'I' || tempExpression.charAt(counter) == 'J') {
@@ -212,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
         }
         if (count!=0)
             isExpression=false;
-        isExpression=isExpression&&expression.matches("^(([(]*([+\\-]?[(]*([ctshijCTSHIJ][(]+[-]?)*\\d+((.\\d+)|!)?([)][!]?)*))(([+^\\-/*)(]|((([+^\\-/*)(])?)([ctshijCTSHIJ][(]+[-]?)+))[(]*\\d+((.\\d+)|!)?([)][!]?)*)*)$");
+        isExpression=isExpression&&expression.matches("^(([(]*([+\\-]?[(]*([ctshijCTSHIJALNαβγδεζ][(]+[-]?)*\\d+((.\\d+)|!)?([)][!]?)*))(([+^\\-/*)(]|((([+^\\-/*)(])?)([ctshijCTSHIJALNαβγδεζ][(]+[-]?)+))[(]*\\d+((.\\d+)|!)?([)][!]?)*)*)$");
         return isExpression;
     }
 
@@ -252,10 +272,10 @@ public class MainActivity extends AppCompatActivity {
         while (!globalStack.peek().equals(")")) {
             tempValue=globalStack.pop();
             if (tempValue.equals("s")) {
-                tempStack.push(String.valueOf(round(Math.sin(Double.parseDouble(globalStack.pop())),10)));
+                tempStack.push(String.valueOf(round(sin(Double.parseDouble(globalStack.pop())),10)));
             }
             else if (tempValue.equals("c")) {
-                tempStack.push(String.valueOf(round(Math.cos(Double.parseDouble(globalStack.pop())),10)));
+                tempStack.push(String.valueOf(round(cos(Double.parseDouble(globalStack.pop())),10)));
             }
             else if (tempValue.equals("t")) {
                 double x=Double.parseDouble(globalStack.pop());
@@ -264,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
                     errorCode=3;
                 }
                 else {
-                    tempStack.push(String.valueOf(round(Math.tan(x),10)));
+                    tempStack.push(String.valueOf(round(tan(x),10)));
                 }
             }
             else if (tempValue.equals("h")) {
@@ -320,6 +340,97 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     tempStack.push(String.valueOf(round(atanh(x),10)));
+                }
+            }
+            else if (tempValue.equals("A")) {
+                double x=Double.parseDouble(globalStack.pop());
+                tempStack.push(String.valueOf(abs(x)));
+                }
+            else if (tempValue.equals("L")) {
+                double x=Double.parseDouble(globalStack.pop());
+                if (x>0) {
+                    tempStack.push(String.valueOf(log10(x)));
+                }
+                else {
+                    errorCode=4;
+                    tempStack.push("1");
+                }
+            }
+            else if (tempValue.equals("N")) {
+                double x=Double.parseDouble(globalStack.pop());
+                if (x>0) {
+                    tempStack.push(String.valueOf(log(x)));
+                }
+                else {
+                    errorCode=4;
+                    tempStack.push("1");
+                }
+            }
+            else if (tempValue.equals("α")) {
+                double x=cos(Double.parseDouble(globalStack.pop()));
+                if (x!=0) {
+                    tempStack.push(String.valueOf(1/x));
+                }
+                else {
+                    errorCode=3;
+                    tempStack.push("1");
+                }
+            }
+            else if (tempValue.equals("β")) {
+                double x=sin(Double.parseDouble(globalStack.pop()));
+                if (x!=0) {
+                    tempStack.push(String.valueOf(1/x));
+                }
+                else {
+                    errorCode=3;
+                    tempStack.push("1");
+                }
+            }
+            else if (tempValue.equals("γ")) {
+                double x=Double.parseDouble(globalStack.pop());
+                if (x!=0 && ((x-round(PI/2,10))/round(PI,10)==Math.floor((x-round(PI/2,10))/round(PI,10)) || (x+round(PI/2,10))/round(PI,10)==Math.floor((x+round(PI/2,10))/round(PI,10)))) {
+                    tempStack.push("1");
+                    errorCode=3;
+                }
+                else {
+                    x=tan(x);
+                    if (x!=0) {
+                        tempStack.push(String.valueOf(1/tan(x)));
+                    }
+                    else {
+                        errorCode=3;
+                        tempStack.push("1");
+                    }
+                }
+            }
+            else if (tempValue.equals("δ")) {
+                double x=sinh(Double.parseDouble(globalStack.pop()));
+                if (x!=0) {
+                    tempStack.push(String.valueOf(1/x));
+                }
+                else {
+                    errorCode=3;
+                    tempStack.push("1");
+                }
+            }
+            else if (tempValue.equals("ε")) {
+                double x=cosh(Double.parseDouble(globalStack.pop()));
+                if (x!=0) {
+                    tempStack.push(String.valueOf(1/x));
+                }
+                else {
+                    errorCode=3;
+                    tempStack.push("1");
+                }
+            }
+            else if (tempValue.equals("ζ")) {
+                double x=tanh(Double.parseDouble(globalStack.pop()));
+                if (x!=0) {
+                    tempStack.push(String.valueOf(1/x));
+                }
+                else {
+                    errorCode=3;
+                    tempStack.push("1");
                 }
             }
             else {
@@ -518,48 +629,162 @@ public class MainActivity extends AppCompatActivity {
     }
     public void onButtonTapSin(View v) {
         TextView label=findViewById(R.id.label);
-        if (shiftState) {
-            label.append("arc");
-        }
-        label.append("sin(");
+        Button self=findViewById(R.id.buttonsin);
+        label.append(self.getText()+"(");
     }
     public void onButtonTapCos(View v) {
         TextView label=findViewById(R.id.label);
-        if (shiftState) {
-            label.append("arc");
-        }
-        label.append("cos(");
+        Button self=findViewById(R.id.buttoncos);
+        label.append(self.getText()+"(");
     }
     public void onButtonTapTan(View v) {
         TextView label=findViewById(R.id.label);
-        if (shiftState) {
-            label.append("arc");
-        }
-        label.append("tan(");
+        Button self=findViewById(R.id.buttontan);
+        label.append(self.getText()+"(");
     }
     public void onButtonTapSinh(View v) {
         TextView label=findViewById(R.id.label);
-        if (shiftState) {
-            label.append("arc");
-        }
-        label.append("sinh(");
+        Button self=findViewById(R.id.buttonsinh);
+        label.append(self.getText()+"(");
     }
     public void onButtonTapCosh(View v) {
         TextView label=findViewById(R.id.label);
-        if (shiftState) {
-            label.append("arc");
-        }
-        label.append("cosh(");
+        Button self=findViewById(R.id.buttoncosh);
+        label.append(self.getText()+"(");
     }
     public void onButtonTapTanh(View v) {
         TextView label=findViewById(R.id.label);
-        if (shiftState) {
-            label.append("arc");
-        }
-        label.append("tanh(");
+        Button self=findViewById(R.id.buttontanh);
+        label.append(self.getText()+"(");
+    }
+    public void onButtonTapSec(View v) {
+        TextView label=findViewById(R.id.label);
+        Button self=findViewById(R.id.buttonsec);
+        label.append(self.getText()+"(");
+    }
+    public void onButtonTapCosec(View v) {
+        TextView label=findViewById(R.id.label);
+        Button self=findViewById(R.id.buttoncsc);
+        label.append(self.getText()+"(");
+    }
+    public void onButtonTapCot(View v) {
+        TextView label=findViewById(R.id.label);
+        Button self=findViewById(R.id.buttoncot);
+        label.append(self.getText()+"(");
+    }
+    public void onButtonTapSech(View v) {
+        TextView label=findViewById(R.id.label);
+        Button self=findViewById(R.id.buttonsech);
+        label.append(self.getText()+"(");
+    }
+    public void onButtonTapCosech(View v) {
+        TextView label=findViewById(R.id.label);
+        Button self=findViewById(R.id.buttoncsch);
+        label.append(self.getText()+"(");
+    }
+    public void onButtonTapCoth(View v) {
+        TextView label=findViewById(R.id.label);
+        Button self=findViewById(R.id.buttoncoth);
+        label.append(self.getText()+"(");
+    }
+    public void onButtonTapAbs(View v) {
+        TextView label=findViewById(R.id.label);
+        label.append("abs(");
+    }
+    public void onButtonTapLog(View v) {
+        TextView label=findViewById(R.id.label);
+        label.append("log(");
+    }
+    public void onButtonTapLn(View v) {
+        TextView label=findViewById(R.id.label);
+        label.append("ln(");
     }
     public void onButtonTapShift(View v) {
         shiftState=!shiftState;
+        Button shift=findViewById(R.id.buttonsin);
+        if (shiftState) {
+            shift.setText("arcsin");
+        }
+        else {
+            shift.setText("sin");
+        }
+        shift=findViewById(R.id.buttoncos);
+        if (shiftState) {
+            shift.setText("arccos");
+        }
+        else {
+            shift.setText("cos");
+        }
+        shift=findViewById(R.id.buttontan);
+        if (shiftState) {
+            shift.setText("arctan");
+        }
+        else {
+            shift.setText("tan");
+        }
+        shift=findViewById(R.id.buttonsinh);
+        if (shiftState) {
+            shift.setText("arcsinh");
+        }
+        else {
+            shift.setText("sinh");
+        }
+        shift=findViewById(R.id.buttoncosh);
+        if (shiftState) {
+            shift.setText("arccosh");
+        }
+        else {
+            shift.setText("cosh");
+        }
+        shift=findViewById(R.id.buttontanh);
+        if (shiftState) {
+            shift.setText("arctanh");
+        }
+        else {
+            shift.setText("tanh");
+        }
+        shift=findViewById(R.id.buttonsec);
+        if (shiftState) {
+            shift.setText("arcsec");
+        }
+        else {
+            shift.setText("sec");
+        }
+        shift=findViewById(R.id.buttoncsc);
+        if (shiftState) {
+            shift.setText("arccsc");
+        }
+        else {
+            shift.setText("csc");
+        }
+        shift=findViewById(R.id.buttoncot);
+        if (shiftState) {
+            shift.setText("arccot");
+        }
+        else {
+            shift.setText("cot");
+        }
+        shift=findViewById(R.id.buttonsech);
+        if (shiftState) {
+            shift.setText("arcsech");
+        }
+        else {
+            shift.setText("sech");
+        }
+        shift=findViewById(R.id.buttoncsch);
+        if (shiftState) {
+            shift.setText("arccsch");
+        }
+        else {
+            shift.setText("csch");
+        }
+        shift=findViewById(R.id.buttoncoth);
+        if (shiftState) {
+            shift.setText("arccoth");
+        }
+        else {
+            shift.setText("coth");
+        }
     }
     public void onButtonTapEqual(View v) {
         TextView label=findViewById(R.id.label);
@@ -568,5 +793,14 @@ public class MainActivity extends AppCompatActivity {
     public void onButtonTapFactorial(View v) {
         TextView label=findViewById(R.id.label);
         label.append("!");
+    }
+    public void showlayout(View v) {
+        ConstraintLayout lay1=findViewById(R.id.maintab);
+        if (lay1.getVisibility()==View.GONE) {
+            lay1.setVisibility(View.VISIBLE);
+        }
+        else {
+            lay1.setVisibility(View.GONE);
+        }
     }
 }

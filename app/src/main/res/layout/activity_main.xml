@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,9 +12,9 @@
         android:id="@+id/label"
         android:layout_width="0dp"
         android:layout_height="56dp"
+        android:background="#555"
         android:text=""
         android:textColor="#0F0"
-        android:background="#555"
         android:textSize="20pt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,10 +34,10 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.227"
+        app:layout_constraintHorizontal_bias="0.197"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.118" />
+        app:layout_constraintVertical_bias="0.629" />
 
     <Button
         android:id="@+id/button4"
@@ -51,7 +52,7 @@
         app:layout_constraintHorizontal_bias="0.047"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.258" />
+        app:layout_constraintVertical_bias="0.736" />
 
     <Button
         android:id="@+id/button8"
@@ -63,10 +64,10 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.227"
+        app:layout_constraintHorizontal_bias="0.197"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintVertical_bias="0.844" />
 
     <Button
         android:id="@+id/button9"
@@ -78,10 +79,10 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.407"
+        app:layout_constraintHorizontal_bias="0.347"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintVertical_bias="0.844" />
 
     <Button
         android:id="@+id/button0"
@@ -93,10 +94,10 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.227"
+        app:layout_constraintHorizontal_bias="0.047"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.543" />
+        app:layout_constraintVertical_bias="0.956" />
 
     <Button
         android:id="@+id/button15"
@@ -108,7 +109,7 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.407"
+        app:layout_constraintHorizontal_bias="0.347"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
         app:layout_constraintVertical_bias="0.956" />
@@ -123,10 +124,10 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.407"
+        app:layout_constraintHorizontal_bias="0.649"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.68" />
+        app:layout_constraintVertical_bias="0.844" />
 
     <Button
         android:id="@+id/button16"
@@ -138,10 +139,9 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.047"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.68" />
+        app:layout_constraintVertical_bias="0.736" />
 
     <Button
         android:id="@+id/button17"
@@ -153,139 +153,42 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.227"
+        app:layout_constraintHorizontal_bias="0.649"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.68" />
+        app:layout_constraintVertical_bias="0.736" />
 
     <Button
         android:id="@+id/buttonpi"
-        android:textAllCaps="false"
         android:layout_width="50dp"
         android:layout_height="40dp"
         android:background="@color/greenish"
         android:onClick="onButtonTapPI"
         android:text="π"
+        android:textAllCaps="false"
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.595"
+        app:layout_constraintHorizontal_bias="0.649"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintVertical_bias="0.956" />
 
     <Button
         android:id="@+id/buttone"
-        android:textAllCaps="false"
         android:layout_width="50dp"
         android:layout_height="40dp"
         android:background="@color/greenish"
         android:onClick="onButtonTapE"
         android:text="e"
-        android:textColor="@android:color/holo_green_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.595"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.543" />
-
-    <Button
-        android:id="@+id/buttonsin"
-        android:layout_width="50dp"
-        android:layout_height="40dp"
-        android:background="@color/greenish"
-        android:onClick="onButtonTapSin"
-        android:text="sin"
         android:textAllCaps="false"
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.595"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.68" />
-
-    <Button
-        android:id="@+id/buttontanh"
-        android:layout_width="50dp"
-        android:layout_height="40dp"
-        android:background="@color/greenish"
-        android:onClick="onButtonTapTanh"
-        android:text="tanh"
-        android:textAllCaps="false"
-        android:textColor="@android:color/holo_green_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.784"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.4" />
-
-    <Button
-        android:id="@+id/buttoncosh"
-        android:layout_width="50dp"
-        android:layout_height="40dp"
-        android:background="@color/greenish"
-        android:onClick="onButtonTapCosh"
-        android:text="cosh"
-        android:textAllCaps="false"
-        android:textColor="@android:color/holo_green_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.784"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.258" />
-
-    <Button
-        android:id="@+id/buttonsinh"
-        android:layout_width="50dp"
-        android:layout_height="40dp"
-        android:background="@color/greenish"
-        android:onClick="onButtonTapSinh"
-        android:text="sinh"
-        android:textAllCaps="false"
-        android:textColor="@android:color/holo_green_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.784"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.118" />
-
-
-    <Button
-        android:id="@+id/buttoncos"
-        android:layout_width="50dp"
-        android:layout_height="40dp"
-        android:background="@color/greenish"
-        android:onClick="onButtonTapCos"
-        android:text="cos"
-        android:textAllCaps="false"
-        android:textColor="@android:color/holo_green_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.595"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.814" />
-
-    <Button
-        android:id="@+id/buttontan"
-        android:layout_width="50dp"
-        android:layout_height="40dp"
-        android:background="@color/greenish"
-        android:onClick="onButtonTapTan"
-        android:text="tan"
-        android:textAllCaps="false"
-        android:textColor="@android:color/holo_green_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.595"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
         app:layout_constraintVertical_bias="0.956" />
+
 
     <Button
         android:id="@+id/buttonshift"
@@ -298,10 +201,10 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.784"
+        app:layout_constraintHorizontal_bias="0.047"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.543" />
+        app:layout_constraintVertical_bias="0.413" />
 
     <Button
         android:id="@+id/buttonfact"
@@ -313,10 +216,56 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.595"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.258" />
+        app:layout_constraintVertical_bias="0.521" />
+
+    <Button
+        android:id="@+id/buttonabs"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:background="@color/greenish"
+        android:onClick="onButtonTapAbs"
+        android:text="abs"
+        android:textAllCaps="false"
+        android:textColor="@android:color/holo_green_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.649"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label"
+        app:layout_constraintVertical_bias="0.521" />
+
+    <Button
+        android:id="@+id/buttonlog"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:background="@color/greenish"
+        android:onClick="onButtonTapLog"
+        android:text="log"
+        android:textAllCaps="false"
+        android:textColor="@android:color/holo_green_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label"
+        app:layout_constraintVertical_bias="0.629" />
+
+    <Button
+        android:id="@+id/buttonln"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:background="@color/greenish"
+        android:onClick="onButtonTapLn"
+        android:text="ln"
+        android:textAllCaps="false"
+        android:textColor="@android:color/holo_green_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.649"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label"
+        app:layout_constraintVertical_bias="0.629" />
 
     <Button
         android:id="@+id/buttonclr"
@@ -328,10 +277,10 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.595"
+        app:layout_constraintHorizontal_bias="0.347"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.118" />
+        app:layout_constraintVertical_bias="0.413" />
 
     <Button
         android:id="@+id/buttondel"
@@ -343,10 +292,9 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.407"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.543" />
+        app:layout_constraintVertical_bias="0.413" />
 
     <Button
         android:id="@+id/buttonfloat"
@@ -358,10 +306,10 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintHorizontal_bias="0.197"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.543" />
+        app:layout_constraintVertical_bias="0.956" />
 
     <Button
         android:id="@+id/buttonpar1"
@@ -376,7 +324,7 @@
         app:layout_constraintHorizontal_bias="0.047"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.814" />
+        app:layout_constraintVertical_bias="0.521" />
 
     <Button
         android:id="@+id/buttonpar2"
@@ -388,10 +336,10 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.227"
+        app:layout_constraintHorizontal_bias="0.197"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.814" />
+        app:layout_constraintVertical_bias="0.521" />
 
     <Button
         android:id="@+id/buttonadd"
@@ -403,10 +351,9 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.407"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.814" />
+        app:layout_constraintVertical_bias="0.844" />
 
     <Button
         android:id="@+id/button6"
@@ -418,10 +365,10 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.407"
+        app:layout_constraintHorizontal_bias="0.347"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.258" />
+        app:layout_constraintVertical_bias="0.736" />
 
     <Button
         android:id="@+id/button3"
@@ -433,10 +380,10 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.407"
+        app:layout_constraintHorizontal_bias="0.347"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.118" />
+        app:layout_constraintVertical_bias="0.629" />
 
     <Button
         android:id="@+id/button7"
@@ -451,7 +398,7 @@
         app:layout_constraintHorizontal_bias="0.047"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintVertical_bias="0.844" />
 
     <Button
         android:id="@+id/button5"
@@ -463,10 +410,10 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.227"
+        app:layout_constraintHorizontal_bias="0.197"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.258" />
+        app:layout_constraintVertical_bias="0.736" />
 
     <Button
         android:id="@+id/buttonpow"
@@ -478,10 +425,10 @@
         android:textColor="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.047"
+        app:layout_constraintHorizontal_bias="0.347"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.956" />
+        app:layout_constraintVertical_bias="0.521" />
 
     <Button
         android:id="@+id/button1"
@@ -496,5 +443,176 @@
         app:layout_constraintHorizontal_bias="0.047"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label"
-        app:layout_constraintVertical_bias="0.118" />
+        app:layout_constraintVertical_bias="0.629" />
+
+    <Button
+        android:id="@+id/buttonlayout"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:background="@color/greenish"
+        android:onClick="showlayout"
+        android:text="Trig-Hyp"
+        android:textColor="@android:color/holo_green_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.649"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label"
+        app:layout_constraintVertical_bias="0.413" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/maintab"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        app:layout_constraintLeft_creator="@android:integer/config_longAnimTime"
+        app:layout_constraintLeft_toRightOf="@+id/main"
+        app:layout_constraintTop_toBottomOf="@+id/label">
+
+        <Button
+            android:id="@+id/buttonsin"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@color/greenish"
+            android:onClick="onButtonTapSin"
+            android:text="sin"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_green_light"
+            app:layout_constraintLeft_toLeftOf="@+id/maintab" />
+
+        <Button
+            android:id="@+id/buttoncos"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@color/greenish"
+            android:onClick="onButtonTapCos"
+            android:text="cos"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_green_light"
+            app:layout_constraintLeft_toRightOf="@+id/buttonsin" />
+
+        <Button
+            android:id="@+id/buttontan"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@color/greenish"
+            android:onClick="onButtonTapTan"
+            android:text="tan"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_green_light"
+            app:layout_constraintLeft_toRightOf="@+id/buttoncos"
+            app:layout_constraintTop_toBottomOf="@+id/maintab" />
+
+        <Button
+            android:id="@+id/buttonsinh"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@color/greenish"
+            android:onClick="onButtonTapSinh"
+            android:text="sinh"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_green_light"
+            app:layout_constraintLeft_toRightOf="@+id/buttontan" />
+
+        <Button
+            android:id="@+id/buttoncosh"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@color/greenish"
+            android:onClick="onButtonTapCosh"
+            android:text="cosh"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_green_light"
+            app:layout_constraintLeft_toRightOf="@+id/buttonsinh" />
+
+        <Button
+            android:id="@+id/buttontanh"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@color/greenish"
+            android:onClick="onButtonTapTanh"
+            android:text="tanh"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_green_light"
+            app:layout_constraintLeft_toRightOf="@+id/buttoncosh" />
+
+        <Button
+            android:id="@+id/buttonsec"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@color/greenish"
+            android:onClick="onButtonTapSec"
+            android:text="sec"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_green_light"
+            app:layout_constraintLeft_toLeftOf="@+id/maintab"
+            app:layout_constraintTop_toBottomOf="@+id/buttonsin"/>
+
+        <Button
+            android:id="@+id/buttoncsc"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@color/greenish"
+            android:onClick="onButtonTapCosec"
+            android:text="csc"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_green_light"
+            app:layout_constraintLeft_toRightOf="@+id/buttonsec"
+            app:layout_constraintTop_toBottomOf="@+id/buttoncos"/>
+
+        <Button
+            android:id="@+id/buttoncot"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@color/greenish"
+            android:onClick="onButtonTapCot"
+            android:text="cot"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_green_light"
+            app:layout_constraintLeft_toRightOf="@+id/buttoncsc"
+            app:layout_constraintTop_toBottomOf="@+id/buttontan" />
+
+        <Button
+            android:id="@+id/buttonsech"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@color/greenish"
+            android:onClick="onButtonTapSech"
+            android:text="sech"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_green_light"
+            app:layout_constraintLeft_toRightOf="@+id/buttoncot"
+            app:layout_constraintTop_toBottomOf="@+id/buttonsinh"/>
+
+        <Button
+            android:id="@+id/buttoncsch"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@color/greenish"
+            android:onClick="onButtonTapCosech"
+            android:text="csch"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_green_light"
+            app:layout_constraintLeft_toRightOf="@+id/buttonsech"
+            app:layout_constraintTop_toBottomOf="@+id/buttoncosh" />
+
+        <Button
+            android:id="@+id/buttoncoth"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:background="@color/greenish"
+            android:onClick="onButtonTapCoth"
+            android:text="coth"
+            android:textAllCaps="false"
+            android:textColor="@android:color/holo_green_light"
+            app:layout_constraintLeft_toRightOf="@+id/buttoncsch"
+            app:layout_constraintTop_toBottomOf="@+id/buttontanh" />
+
+    </android.support.constraint.ConstraintLayout>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
 </android.support.constraint.ConstraintLayout>
